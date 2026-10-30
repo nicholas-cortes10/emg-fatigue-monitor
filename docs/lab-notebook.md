@@ -1,5 +1,16 @@
 # Lab Notebook
 
+## 2026-10-30
+- First gym attempt at the isometric fatigue hold, on laptop instead of desktop PC
+- Determined test parameters on right arm first (no sensor): preacher bench, 35 lb dumbbell, held to failure at ~60s at the elbow angle of peak bicep tension — photographed for later angle measurement. 35 lb confirmed as the right load for a ~30-60s target failure window
+- Real recording attempt on battery power came back at only 623 Hz effective rate instead of the expected ~1000 Hz (56,564 samples over 90.8s). Saved file renamed to isometric_hold_01_FAILED_623hz.csv rather than deleted, kept as a reference
+- Root cause: running on battery, not plugged in. Confirmed by a 15s rate-check recording after plugging in a spare charger — 14,991 samples in 15.00s = 999.4 Hz, matching desktop performance exactly
+- Lesson: laptop must be on AC power for any real recording. Battery-saving CPU throttling is enough to silently cut the sustainable serial throughput by ~40%, which would have corrupted the Nyquist margin (effective ceiling ~311 Hz against ~450 Hz of real sEMG content) without any visible error
+- Second real attempt (post-charger) failed for a different reason: had someone else press Enter to start the recording so both hands were free for the weight. Terminal likely wasn't focused when they pressed it — nothing saved, no new CSV, and no way to confirm afterward whether it ran at all
+- Lesson: don't hand off the start step. The protocol depends on being able to see the terminal confirm it's running; a second person without context can't verify that. Next attempt: start the recording myself, accept ~2s of setup noise in the baseline rather than risk an unverified run
+- Out of fresh electrodes after two attempts — ordering more before the next session
+- Next session: same protocol, laptop on AC power from the start, same 35 lb / same angle, start the recording solo
+
 ## 2026-09-08
 - Verified the micros() scheduling from last session: intervals were exactly 1000 µs with zero standard deviation. Timing logic confirmed correct
 - But only 820 samples arrived in a 15 s window instead of ~15,000. Deltas were uniformly 1000 µs with no gaps, meaning the samples were contiguous — the capture stopped early rather than dropping samples throughout
