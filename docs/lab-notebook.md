@@ -1,5 +1,16 @@
 # Lab Notebook
 
+## 2026-11-11 (analysis session)
+- SciPy 1.18.1 loads from the terminal. The Jupyter kernel hung twice (on the SciPy import cell, then ~8 min on a plotting cell, even after a restart), so moved the analysis into .py scripts that save figures to file with matplotlib's Agg backend. Notebook kernel still to be fixed
+- Analysis window: samples 3000–61500 (3.0–61.5 s into the recording, 58.5 s). Start excludes the pickup transient, which decays by ~2–2.5 s; end excludes a burst of larger spikes at ~62–62.7 s that looks like the release. Boundaries read off plots, good to about ±0.5 s. First and last samples dropped as possibly truncated serial lines
+- Bandpass: 4th-order Butterworth, 20–450 Hz, second-order sections, applied zero-phase with sosfiltfilt after subtracting the mean. Changed the waveform very little, since the MyoWare RAW output already passes through an analog bandpass of roughly 20–500 Hz. Kept so the analysis band is explicit
+- Two single large transients noted at ~16 s and ~29 s into the window (possible small shifts or cable tugs)
+- Welch PSD (nperseg = 1024, ~1 Hz resolution): broad hump peaking around 40–60 Hz, declining toward 450 Hz, steep roll-off at both band edges. No narrow peak visible at 60, 120 or 180 Hz, so the planned 60 Hz notch was not applied. A notch at 60 Hz would also remove real EMG power near the spectral peak and bias median frequency. Higher-resolution check (nperseg = 4096) still pending
+- Median frequency: 5 s sliding windows, 1 s step (~54 windows); median = frequency where cumulative power in 20–450 Hz reaches 50% of the total. Raw values fell from ~70 Hz early in the hold to ~52 Hz at the end. Linear fit: slope −0.30 Hz/s (≈ −18 Hz/min); fitted median frequency 69.0 → 53.0 Hz (−23.3%). Consistent with the expected fatigue-related downward shift
+- Caveats: single trial. Windows overlap by 80%, so successive points aren't independent and no p-value is reported. Values are quantized to ~1 Hz steps by the PSD resolution. A rise at ~28–35 s partly coincides with the 29 s transient; the peak near 34.5 s is unexplained and needs checking against the raw signal
+- Bug: entered 54 instead of 0.5 as the median fraction, so the cumulative-power search ran off the end of the array (IndexError: index 440 out of bounds for size 440)
+- Next: robustness check (3 s and 10 s windows, nperseg = 512), inspect raw signal at 32–37 s, then trial 2 for replication
+
 ## 2026-11-11
 - First valid isometric hold recording: left bicep, preacher bench, 30 lb dumbbell, sensor on RAW. 89,951 samples over 90.01 s = 999.4 Hz, saved as data/raw/isometric_hold_01.csv and committed
 - Setup for the successful run: laptop on AC power, cables taped with slack, right hand holding the cable in place during the hold, so the sensor arm had to pick up the dumbbell itself. [confirm: what else was secured, e.g. Arduino taped to arm]

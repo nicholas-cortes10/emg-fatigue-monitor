@@ -51,6 +51,11 @@ for start in range(0, len(filtered) - nwin + 1, step_s * fs):
 slope, intercept = np.polyfit(mf_t, mf_v, 1)
 print(f"median frequency slope: {slope:.3f} Hz/s")
 
+mf_start = slope * mf_t[0] + intercept
+mf_end = slope * mf_t[-1] + intercept
+pct = 100 * (mf_end - mf_start) / mf_start
+print(f"fitted median frequency: {mf_start:.1f} -> {mf_end:.1f} Hz ({pct:.1f}%)")
+
 plt.figure(figsize=(10, 4))
 plt.plot(mf_t, mf_v, "o-")
 plt.plot(mf_t, slope * np.array(mf_t) + intercept, "r--")
