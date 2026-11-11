@@ -6,6 +6,7 @@
 - Plot review (numpy + matplotlib): pickup transient from 0 to ~2 s (movement plus hard contraction, to be excluded from analysis), sustained activity until ~62 s, weight released at ~62.5 s, very flat resting baseline from 63 to 90 s. Hold lasted about 60 s by the plot, versus my ~50 s estimate. Oscillation looks wider around 40-52 s than at 10-30 s, consistent with fatigue-related recruitment, but that needs to be measured, not assumed
 - Limitations: no calm pre-hold baseline (script started before pickup); pickup transient contaminates the first seconds; the final sample reads as 0 at t = 90 s, probably a truncated serial line, so first and last samples get trimmed; angle photo still on phone, to be added to docs/images
 - Software: pandas import was blocked by a Windows Application Control policy ("DLL load failed while importing hashing") even though it imported fine a week earlier. Worked around it with numpy.loadtxt. SciPy not yet verified
+- Elbow angle measured from a side-profile photo taken mid-hold (docs/images/angle_photo.PNG) with analysis/measure_angle.py (three clicked points, dot-product angle): 122.1°, 123.1°, 125.5° → 123.6° ± 1.7° (mean ± SD, n = 3). Single 2D photo, no goniometer, so treated as approximate
 
 ## 2026-11-10
 - Second gym session, same laptop. Three real attempts failed on sample rate even though every stationary 15 s check passed (~999.5 Hz):
