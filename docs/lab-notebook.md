@@ -1,5 +1,23 @@
 # Lab Notebook
 
+## 2026-11-11
+- First valid isometric hold recording: left bicep, preacher bench, 30 lb dumbbell, sensor on RAW. 89,951 samples over 90.01 s = 999.4 Hz, saved as data/raw/isometric_hold_01.csv and committed
+- Setup for the successful run: laptop on AC power, cables taped with slack, right hand holding the cable in place during the hold, so the sensor arm had to pick up the dumbbell itself. [confirm: what else was secured, e.g. Arduino taped to arm]
+- Plot review (numpy + matplotlib): pickup transient from 0 to ~2 s (movement plus hard contraction, to be excluded from analysis), sustained activity until ~62 s, weight released at ~62.5 s, very flat resting baseline from 63 to 90 s. Hold lasted about 60 s by the plot, versus my ~50 s estimate. Oscillation looks wider around 40-52 s than at 10-30 s, consistent with fatigue-related recruitment, but that needs to be measured, not assumed
+- Limitations: no calm pre-hold baseline (script started before pickup); pickup transient contaminates the first seconds; the final sample reads as 0 at t = 90 s, probably a truncated serial line, so first and last samples get trimmed; angle photo still on phone, to be added to docs/images
+- Software: pandas import was blocked by a Windows Application Control policy ("DLL load failed while importing hashing") even though it imported fine a week earlier. Worked around it with numpy.loadtxt. SciPy not yet verified
+
+## 2026-11-10
+- Second gym session, same laptop. Three real attempts failed on sample rate even though every stationary 15 s check passed (~999.5 Hz):
+  - 35 lb: 65,234 samples in 90.4 s = 721.9 Hz. Unclear whether the laptop was actually drawing AC power
+  - 30 lb after switching outlets: 1,115 samples = 12.3 Hz
+  - 30 lb after repositioning laptop and cable: 15,813 samples = 175 Hz
+- Arduino and MyoWare power LEDs stayed lit during tension, so power was not the cause. Failures only appeared with weight and motion, which points to the USB data connection (flexing or tugging when settling onto the pad) or interference from the charger placed near the cable. Neither hypothesis was confirmed
+- At home, rechecked at 15 s while mimicking the motion (no weight, then ~7 lb): both ~999.5 Hz, so light replicas did not reproduce the failure
+- The Nov 11 success changed several variables at once (taped cables, strain relief, secured setup), so the exact root cause was not isolated
+- All failed recordings were renamed and kept as diagnostics, not used as data
+- Lessons: validate the setup under realistic load, since a stationary check did not predict failure. Read the effective rate printout right after every run. Start the recording myself, with no handoff
+
 ## 2026-10-30
 - First gym attempt at the isometric fatigue hold, on laptop instead of desktop PC
 - Determined test parameters on right arm first (no sensor): preacher bench, 35 lb dumbbell, held to failure at ~60s at the elbow angle of peak bicep tension — photographed for later angle measurement. 35 lb confirmed as the right load for a ~30-60s target failure window
