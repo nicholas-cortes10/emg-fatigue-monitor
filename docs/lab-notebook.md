@@ -10,6 +10,12 @@
 - Percent changes vary more than slopes because longer windows place their first and last points further from the ends of the hold, shortening the fitted span. Slope is the comparable measure
 - Prediction beforehand: all decline, 10 s smoothest. Decline confirmed
 - Figure saved as docs/Images/robustness_hold01.png; README updated
+- Investigated the median frequency rise at ~28–35 s (analysis/check_bump.py): per-window median frequency, RMS amplitude, and share of raw power below 20 Hz, plus a zoom of the filtered signal
+  - Low-frequency share stayed flat (~2%) through the rise and the zoomed signal showed normal EMG apart from one spike at ~28.8 s, so an electrode or cable problem is unlikely
+  - 28–32 s: median frequency rose while RMS was flat, likely inflated by the 28.8 s transient in windows containing it
+  - 32–35 s: median frequency and RMS rose together, consistent with extra recruitment, a re-grip, or a small angle change; median frequency then fell while RMS kept rising (typical fatigue pattern)
+  - Cause not confirmable without force or angle recording
+  - Low-frequency share rose to ~4.8% near 53–54 s, plausibly tremor approaching failure
 
 ## 2026-11-11 (analysis session)
 - SciPy 1.18.1 loads from the terminal. The Jupyter kernel hung twice (on the SciPy import cell, then ~8 min on a plotting cell, even after a restart), so moved the analysis into .py scripts that save figures to file with matplotlib's Agg backend. Notebook kernel still to be fixed
