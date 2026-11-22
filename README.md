@@ -1,5 +1,7 @@
 # EMG Muscle Fatigue Monitor
 
+**Status:** completed pilot project (August–November 2026).
+
 A surface electromyography (sEMG) system that detects muscle fatigue from the frequency content of the muscle's electrical signal. As a muscle fatigues during a sustained contraction, its fibers conduct electrical impulses more slowly, which shifts the EMG power spectrum toward lower frequencies. This project acquires raw sEMG from the biceps at 1 kHz and tracks that shift by computing the **median frequency** of the power spectrum over time.
 
 Built from scratch: hardware integration, embedded firmware, serial data logging, and a Python signal processing pipeline.
@@ -63,7 +65,7 @@ Implemented in `analysis/pipeline.py` with NumPy, SciPy, and Matplotlib.
 - **One trial.** Replication on separate days is needed before treating the result as a finding.
 - **Overlapping windows.** Adjacent 5 s windows share 4 s of data, so the points aren't independent. No p-value is reported for the trend.
 - **Frequency resolution.** Median frequency moves in ~1 Hz steps at this PSD resolution.
-- **Unexplained bump.** Median frequency rises between ~28 and 35 s into the hold. Part of it coincides with a transient in the raw signal at ~29 s; the rest is not yet explained.
+- **Mid-hold rise.** Median frequency rises between ~28 and 35 s into the hold. Its early part coincides with a single transient at ~28.8 s; its later part coincides with rising RMS amplitude and no increase in low-frequency (<20 Hz) power, which is consistent with additional motor unit recruitment or a small posture change rather than an electrode or cable problem. Without force or joint-angle recording, the cause can't be confirmed.
 - **No pre-hold baseline.** The recording started before the weight was picked up.
 - **Angle from a single 2D photo,** with no goniometer for comparison.
 
@@ -74,6 +76,8 @@ firmware/emg_logger/      Arduino sketch (1 kHz sampling, serial output)
 analysis/log_serial.py    Serial capture to CSV, with effective-rate check
 analysis/check_window.py  Plots the recording edges to choose the analysis window
 analysis/pipeline.py      Filtering, power spectrum, median frequency trend
+analysis/robustness.py    Median frequency trend under different analysis settings
+analysis/check_bump.py    Median frequency, RMS, and low-frequency power per window
 analysis/measure_angle.py Elbow angle from a photo (three clicked points)
 data/raw/                 Recordings (one ADC value per line, 1 kHz)
 docs/lab-notebook.md      Dated engineering log, including failures and fixes
@@ -85,7 +89,8 @@ docs/Images/              Figures and the setup photo
 1. Upload `firmware/emg_logger/emg_logger.ino` to an Uno R4 WiFi, then close the Arduino IDE so the serial port is free.
 2. Install dependencies: `python -m pip install numpy scipy matplotlib pyserial`
 3. In `analysis/log_serial.py`, set `PORT` and `OUTPUT_FILE`, then run `python log_serial.py` from the `analysis` folder. Check that the printed effective rate is close to 1000 Hz.
-4. Run `python pipeline.py` from the `analysis` folder.
+4. Run `python pipeline.py` from the `analysis` folder for the main result.
+5. Optionally, run `python robustness.py` and `python check_bump.py` for the robustness check and the mid-hold investigation.
 
 Run the laptop on AC power. On battery, throttling dropped the sustained rate to ~623 Hz.
 
@@ -97,9 +102,10 @@ The [lab notebook](docs/lab-notebook.md) records every session, including what w
 - Real recordings failing at 623, 175, and 12 Hz while stationary checks passed, traced to battery power (confirmed) and likely cable movement under load (resolved by securing cables, cause not fully isolated).
 - Establishing that the sensor output was RAW rather than envelope by noticing the signal swung symmetrically around the ADC midpoint.
 
-## Next steps
+## Future work
 
 - Replication trials at the same load and elbow angle.
+- Force and joint-angle recording during the hold, to separate effort or posture changes from fatigue.
 - A notebook walkthrough of the pipeline.
 
 *Not a medical device. The MyoWare sensor is not intended for diagnosis or treatment.*
