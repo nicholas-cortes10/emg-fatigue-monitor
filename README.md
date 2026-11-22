@@ -12,6 +12,10 @@ During a ~60 s sustained isometric biceps contraction held to failure, median fr
 
 *Each point is the median frequency of a 5 s window, stepped every 1 s. The dashed line is a linear fit.*
 
+**Robustness:** the slope stayed between −0.30 and −0.32 Hz/s across 3, 5, and 10 s windows and with coarser frequency resolution (`nperseg = 512`), so the decline does not depend on these analysis settings.
+
+![Median frequency trend under different analysis settings](docs/Images/robustness_hold01.png)
+
 This is a single pilot trial. See [Limitations](#limitations).
 
 ## Hardware
@@ -62,7 +66,6 @@ Implemented in `analysis/pipeline.py` with NumPy, SciPy, and Matplotlib.
 - **Unexplained bump.** Median frequency rises between ~28 and 35 s into the hold. Part of it coincides with a transient in the raw signal at ~29 s; the rest is not yet explained.
 - **No pre-hold baseline.** The recording started before the weight was picked up.
 - **Angle from a single 2D photo,** with no goniometer for comparison.
-- **Parameter sensitivity** to window length and PSD settings has not yet been tested.
 
 ## Repository structure
 
@@ -96,7 +99,6 @@ The [lab notebook](docs/lab-notebook.md) records every session, including what w
 
 ## Next steps
 
-- Robustness check across window lengths and PSD settings.
 - Replication trials at the same load and elbow angle.
 - A notebook walkthrough of the pipeline.
 
