@@ -1,5 +1,16 @@
 # Lab Notebook
 
+## 2026-11-21
+- Robustness check of the median frequency result (analysis/robustness.py), rerunning the same pipeline under four settings:
+  - 5 s window, nperseg 1024 (original): slope −0.303 Hz/s, fitted change −23.3%
+  - 3 s window, nperseg 1024: −0.316 Hz/s, −24.8%
+  - 10 s window, nperseg 1024: −0.301 Hz/s, −21.3%
+  - 5 s window, nperseg 512 (~2 Hz resolution): −0.314 Hz/s, −24.0%
+- All slopes negative and within ~5% of each other, so the decline is not an artifact of window length or PSD resolution
+- Percent changes vary more than slopes because longer windows place their first and last points further from the ends of the hold, shortening the fitted span. Slope is the comparable measure
+- Prediction beforehand: all decline, 10 s smoothest. Decline confirmed
+- Figure saved as docs/Images/robustness_hold01.png; README updated
+
 ## 2026-11-11 (analysis session)
 - SciPy 1.18.1 loads from the terminal. The Jupyter kernel hung twice (on the SciPy import cell, then ~8 min on a plotting cell, even after a restart), so moved the analysis into .py scripts that save figures to file with matplotlib's Agg backend. Notebook kernel still to be fixed
 - Analysis window: samples 3000–61500 (3.0–61.5 s into the recording, 58.5 s). Start excludes the pickup transient, which decays by ~2–2.5 s; end excludes a burst of larger spikes at ~62–62.7 s that looks like the release. Boundaries read off plots, good to about ±0.5 s. First and last samples dropped as possibly truncated serial lines
